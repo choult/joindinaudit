@@ -7,7 +7,7 @@ namespace Crell\JoindIn;
 class ConferenceFilter extends \FilterIterator
 {
 
-    const CONFERENCE_MIN_TALKS = 5;
+    const CONFERENCE_MIN_TALKS = 1;
 
     /**
      * Only accept conferences, ie, events with sufficient talks.

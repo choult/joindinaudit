@@ -34,6 +34,8 @@ function init()
     $table->addColumn("talks_count", "integer", ["unsigned" => true]);
     $table->addColumn('num_speakers', 'integer', ['unsigned' => true]);
     $table->addColumn('new_speakers', 'integer', ['unsigned' => true]);
+    $table->addColumn('description', 'text');
+    $table->addColumn('tags', 'text');
     $table->setPrimaryKey(["uri"]);
 //    $table->addUniqueIndex(["username"]);
 //    $schema->createSequence("users_seq");

@@ -195,12 +195,14 @@ function getSpeaker(array $talk)
 function addEventToDatabase(array $event)
 {
     $conn = getDb();
-
     $fields = ['uri', 'url_friendly_name', 'name', 'start_date', 'end_date',
-      'tz_continent', 'tz_place', 'location', 'talks_count'];
+      'tz_continent', 'tz_place', 'location', 'talks_count', 'description', 'tags'];
 
     $insert = [];
     foreach ($fields as $field) {
+        if ($field == 'tags') {
+            $event[$field] = implode(',', $event[$field]);
+        }
         $insert[$field] = isset($event[$field]) ? $event[$field] : '';
     }
 
