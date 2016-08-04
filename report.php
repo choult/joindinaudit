@@ -87,7 +87,14 @@ function reportNewSpeakersPerCon()
         $table->addFooter($averages);
     }
 
-
+     $averages = $conn->executeQuery(
+          "SELECT 'N/A', 'Average', 'Overall',
+             FORMAT(AVG(talks_count), 1), FORMAT(AVG(num_speakers), 1), FORMAT(AVG(new_speakers), 1), FORMAT(AVG(percent_new), 1)
+             FROM (SELECT event.start_date, event.name, tz_continent, talks_count, num_speakers, new_speakers, FORMAT((new_speakers/event.num_speakers)*100, 1) AS percent_new
+              FROM event
+              WHERE start_date >= '2010-01-01'
+              ORDER BY start_date) AS stuff")->fetch();
+    $table->addFooter($averages);
     return $table;
 }
 

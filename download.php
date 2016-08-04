@@ -45,7 +45,6 @@ function fetchPages($initial, callable $processor, $concurrency = 1)
             yield new Request('GET', $page);
         }
     };
-
     $pool = new Pool($client, $pageRequestGenerator($pages), [
         // Since we'll in practice not have more than one item in the queue
         // at once, a higher concurrency would terminate early.
@@ -151,7 +150,7 @@ function addTalkToDatabase(array $event, array $talk)
 {
     $conn = getDb();
 
-    $fields = ['uri', 'url_friendly_talk_title', 'talk_title', 'type', 'duration', 'average_rating'];
+    $fields = ['talk_description', 'uri', 'url_friendly_talk_title', 'talk_title', 'type', 'duration', 'average_rating'];
 
     $insert = [];
     foreach ($fields as $field) {
@@ -197,7 +196,19 @@ function addEventToDatabase(array $event)
     $conn = getDb();
 
     $fields = ['uri', 'url_friendly_name', 'name', 'start_date', 'end_date',
-      'tz_continent', 'tz_place', 'location', 'talks_count'];
+      'tz_continent', 'tz_place', 'location', 'talks_count', 'description', 'tags'];
+
+    if (isset($event['start_date'])) {
+        $event['start_date'] = preg_replace('/T.*$/', '', $event['start_date']);
+    }
+
+    if (isset($event['end_date'])) {
+        $event['end_date'] = preg_replace('/T.*$/', '', $event['end_date']);
+    }
+
+    if (isset($event['tags'])) {
+        $event['tags'] = implode(',', $event['tags']);
+    }
 
     $insert = [];
     foreach ($fields as $field) {

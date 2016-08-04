@@ -23,17 +23,19 @@ function init()
 
     $schema = new Schema();
     $table = $schema->createTable('event');
-    $table->addColumn("uri", "string", ["length" => 128]);
-    $table->addColumn("url_friendly_name", "string", ["length" => 128]);
-    $table->addColumn("name", "string", ["length" => 128]);
+    $table->addColumn("uri", "string", ["length" => 255]);
+    $table->addColumn("url_friendly_name", "string", ["length" => 255]);
+    $table->addColumn("name", "string", ["length" => 255]);
     $table->addColumn("start_date", "date");
     $table->addColumn("end_date", "date");
     $table->addColumn("tz_continent", "string", ["length" => 64]);
     $table->addColumn("tz_place", "string", ["length" => 64]);
-    $table->addColumn("location", "string", ["length" => 64]);
-    $table->addColumn("talks_count", "integer", ["unsigned" => true]);
-    $table->addColumn('num_speakers', 'integer', ['unsigned' => true]);
-    $table->addColumn('new_speakers', 'integer', ['unsigned' => true]);
+    $table->addColumn("location", "string", ["length" => 255]);
+    $table->addColumn("talks_count", "integer", ["unsigned" => true, 'default' => 0]);
+    $table->addColumn('num_speakers', 'integer', ['unsigned' => true, 'default' => 0]);
+    $table->addColumn('new_speakers', 'integer', ['unsigned' => true, 'default' => 0]);
+    $table->addColumn('description', 'text');
+    $table->addColumn('tags', 'text');
     $table->setPrimaryKey(["uri"]);
 //    $table->addUniqueIndex(["username"]);
 //    $schema->createSequence("users_seq");
@@ -41,14 +43,15 @@ function init()
 
     $schema = new Schema();
     $table = $schema->createTable('talk');
-    $table->addColumn("uri", "string", ["length" => 128]);
-    $table->addColumn("url_friendly_talk_title", "string", ["length" => 128]);
-    $table->addColumn("event_uri", "string", ["length" => 128]);
-    $table->addColumn("talk_title", "string", ["length" => 128]);
-    $table->addColumn("type", "string", ["length" => 128]);
+    $table->addColumn("uri", "string", ["length" => 255]);
+    $table->addColumn("url_friendly_talk_title", "string", ["length" => 255]);
+    $table->addColumn("event_uri", "string", ["length" => 255]);
+    $table->addColumn("talk_title", "string", ["length" => 255]);
+    $table->addColumn("type", "string", ["length" => 255]);
     $table->addColumn("duration", "integer", ["unsigned" => true]);
-    $table->addColumn("speaker", "string", ["length" => 128]);
+    $table->addColumn("speaker", "string", ["length" => 255]);
     $table->addColumn("average_rating", "integer", ["unsigned" => true]);
+    $table->addColumn("talk_description", "text");
     $table->setPrimaryKey(["uri"]);
     $table->addForeignKeyConstraint('event', ['event_uri'], ['uri']);
     $sm->dropAndCreateTable($table);
